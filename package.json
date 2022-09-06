@@ -4,15 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test --network hardhat",
+    "test-mumbai": "npx hardhat test --network mumbai"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "erc721a-upgradeable": "^3.3.0",
     "hardhat": "^2.11.0"
   },
   "dependencies": {
-    "dotenv": "^16.0.2"
+    "@chainlink/contracts": "^0.4.1",
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.1.1",
+    "@openzeppelin/contracts": "^4.7.3",
+    "@types/chai": "^4.3.3",
+    "@types/mocha": "^9.1.1",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.2",
+    "ethers": "^5.7.0"
   }
 }
