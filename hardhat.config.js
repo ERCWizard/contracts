@@ -1,5 +1,8 @@
 require('@nomicfoundation/hardhat-toolbox')
 require('dotenv').config()
+require('hardhat-deploy')
+require('hardhat-deploy-ethers')
+require('./tasks')
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -12,6 +15,11 @@ module.exports = {
         version: '0.8.7',
       },
     ],
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
   },
   networks: {
     hardhat: {},
