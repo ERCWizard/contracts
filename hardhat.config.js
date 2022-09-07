@@ -21,6 +21,9 @@ module.exports = {
       default: 0,
     },
   },
+  etherscan: {
+    apiKey: process.env.POLYGONSCAN_API_KEY ?? '',
+  },
   networks: {
     hardhat: {},
     mumbai: {

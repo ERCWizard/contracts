@@ -51,6 +51,8 @@ DEPLOY_PRIVATE_KEY=
 POLYGON_ALCHEMY_RPC_URL=
 # The alchemy mumbai rpc url
 MUMBAI_ALCHEMY_RPC_URL=
+# The polygon API key used to verify contracts
+POLYGONSCAN_API_KEY=
 ```
 
 ## Test coverage
