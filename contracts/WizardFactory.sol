@@ -15,51 +15,18 @@ import "./interfaces/IERC1155.sol";
 /// @author a6Ce6Bs
 /// @notice Factory that creates ERC contracts
 contract WizardFactory is Ownable, ReentrancyGuard {
-    /// @notice Emitted on createERC721Contract()
+    /// @notice Emitted on createERC721Contract() & createERC1155Contract()
     /// @param createdContract Address of deployed Contract
-    /// @param name Contract (ERC721) name
-    /// @param symbol Contract (ERC721) symbol
-    /// @param cost Mint cost
-    /// @param maxSupply Contract (ERC721) maxSupply
-    /// @param maxMintAmountPerTx Max mint amount per transaction
-    /// @param hiddenMetadataUri Hidden metadata uri
-    /// @param uriPrefix Metadata uri prefix
+    /// @param name Contract name
+    /// @param symbol Contract symbol
     /// @param royaltyReceiver Royalty fee collector
-    /// @param royaltyFee Royalty fee numerator
     /// @param contractOwner Contract owner
-    event ERC721ContractCreated(
+    event ContractCreated(
         address indexed createdContract,
         string name,
         string symbol,
-        uint256 cost,
-        uint256 maxSupply,
-        uint256 maxMintAmountPerTx,
-        string hiddenMetadataUri,
-        string uriPrefix,
+        ERCType contractType,
         address indexed royaltyReceiver,
-        uint96 royaltyFee,
-        address indexed contractOwner
-    );
-
-    /// @notice Emitted on createERC1155Contract()
-    /// @param createdContract Address of deployed Contract
-    /// @param name Contract (ERC1155) name
-    /// @param symbol Contract (ERC1155) symbol
-    /// @param id Token id
-    /// @param amount Token supply
-    /// @param uri Token uri
-    /// @param royaltyReceiver Royalty fee collector
-    /// @param royaltyFee Royalty fee numerator
-    /// @param contractOwner Contract owner
-    event ERC1155ContractCreated(
-        address indexed createdContract,
-        string name,
-        string symbol,
-        uint256 id,
-        uint256 amount,
-        string uri,
-        address indexed royaltyReceiver,
-        uint96 royaltyFee,
         address indexed contractOwner
     );
 
@@ -154,17 +121,12 @@ contract WizardFactory is Ownable, ReentrancyGuard {
             CreatedContract({ _type: ERCType.ERC721, _address: createdContract })
         );
 
-        emit ERC721ContractCreated(
+        emit ContractCreated(
             createdContract,
             _name,
             _symbol,
-            _cost,
-            _maxSupply,
-            _maxMintAmountPerTx,
-            _hiddenMetadataUri,
-            _uriPrefix,
+            ERCType.ERC721,
             _royaltyReceiver,
-            _feePercent,
             msg.sender
         );
     }
@@ -212,15 +174,12 @@ contract WizardFactory is Ownable, ReentrancyGuard {
             CreatedContract({ _type: ERCType.ERC1155, _address: createdContract })
         );
 
-        emit ERC1155ContractCreated(
+        emit ContractCreated(
             createdContract,
             _name,
             _symbol,
-            _id,
-            _amount,
-            _uri,
+            ERCType.ERC1155,
             _royaltyReceiver,
-            _feePercent,
             msg.sender
         );
     }
