@@ -1,11 +1,13 @@
 const { cost } = require('../arguments')
 const { verify } = require('../scripts/verify')
+const { networkConfig } = require('../networkConfig')
 
 module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const localhost = network.config.chainId == 31337
+  const chainId = network.config.chainId
+  const localhost = chainId == 31337
 
   const MockV3Aggregator = await deployments.get('MockV3Aggregator')
   const MockV3AggregatorAddress = MockV3Aggregator.address
@@ -13,7 +15,12 @@ module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
   const WizardFactory = await deploy('WizardFactory', {
     contract: 'WizardFactory',
     from: deployer,
-    args: [cost, MockV3AggregatorAddress],
+    args: [
+      cost,
+      localhost
+        ? MockV3AggregatorAddress
+        : networkConfig[chainId].priceFeedAddress,
+    ],
     log: true,
   })
 
