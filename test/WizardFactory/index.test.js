@@ -172,7 +172,7 @@ describe('WizardFactory', () => {
       expect(await createdERC1155Contract.owner()).to.equal(dev.address)
     })
 
-    it('should emit `ERC721ContractCreated` event when ERC721Contract is created', async () => {
+    it('should emit `ContractCreated` event when ERC721Contract is created', async () => {
       await WizardFactory.connect(dev).setERC721Implementation(ERC721.address)
 
       await expect(
@@ -180,10 +180,10 @@ describe('WizardFactory', () => {
           ...Object.values(ERC721_init),
           mintCostValue
         )
-      ).to.emit(WizardFactory, 'ERC721ContractCreated')
+      ).to.emit(WizardFactory, 'ContractCreated')
     })
 
-    it('should emit `ERC1155ContractCreated` event when ERC1155Contract is created', async () => {
+    it('should emit `ContractCreated` event when ERC1155Contract is created', async () => {
       await WizardFactory.connect(dev).setERC1155Implementation(ERC1155.address)
 
       await expect(
@@ -191,7 +191,7 @@ describe('WizardFactory', () => {
           ...Object.values(ERC1155_init),
           mintCostValue
         )
-      ).to.emit(WizardFactory, 'ERC1155ContractCreated')
+      ).to.emit(WizardFactory, 'ContractCreated')
     })
   })
 
