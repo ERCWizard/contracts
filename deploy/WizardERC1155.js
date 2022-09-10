@@ -11,7 +11,7 @@ module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
     from: deployer,
     args: [],
     log: true,
-    waitConfirmations: 5,
+    waitConfirmations: localhost ? 0 : 5,
   })
 
   if (!localhost) {
