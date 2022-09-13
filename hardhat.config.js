@@ -2,6 +2,7 @@ require('@nomicfoundation/hardhat-toolbox')
 require('dotenv').config()
 require('hardhat-deploy')
 require('hardhat-deploy-ethers')
+require('solidity-docgen')
 require('./tasks')
 
 /** @type import('hardhat/config').HardhatUserConfig */
@@ -36,5 +37,10 @@ module.exports = {
       chainId: 137,
       accounts: [process.env.DEPLOY_PRIVATE_KEY],
     },
+  },
+  docgen: {
+    path: './docs',
+    clear: true,
+    runOnCompile: true,
   },
 }
