@@ -26,7 +26,12 @@ module.exports = {
     apiKey: process.env.POLYGONSCAN_API_KEY ?? '',
   },
   networks: {
-    hardhat: {},
+    hardhat: {
+      mining: {
+        auto: false,
+        interval: 5000,
+      },
+    },
     mumbai: {
       url: process.env.MUMBAI_ALCHEMY_RPC_URL,
       chainId: 80001,

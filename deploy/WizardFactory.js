@@ -25,7 +25,7 @@ module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
         : networkConfig[chainId].priceFeedAddress,
     ],
     log: true,
-    waitConfirmations: localhost ? 0 : 5,
+    waitConfirmations: 5,
   })
 
   if (!localhost) {
