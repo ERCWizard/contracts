@@ -2,6 +2,11 @@
 
 ERCWizard Solidity Smart Contracts
 
+| Network   | Address                                    |
+| :-------- | :----------------------------------------- |
+| polygon   | [0x89CC62092e888B4DcA765245ccf1881e12190847](https://polygonscan.com/address/0x89CC62092e888B4DcA765245ccf1881e12190847) |
+| mumbai    | [0x48aB10b4f4867D663CD7Cbf38F2F5A448a46F69d](https://mumbai.polygonscan.com/address/0x48ab10b4f4867d663cd7cbf38f2f5a448a46f69d) |
+
 This repository contains three contracts:
 
 - **ERC721** implements upgradable contracts of [ERC721A](https://github.com/chiru-labs/ERC721A-Upgradeable) and [ERC2981](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/token/common/ERC2981Upgradeable.sol).
