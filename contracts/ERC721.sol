@@ -9,11 +9,8 @@ import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./WizardErrors.sol";
+import "./Errors.sol";
 
-/// @title Wizard ERC721 Contract
-/// @author a6Ce6Bs
-/// @notice ERC721A contract
 contract ERC721 is ERC721AUpgradeable, OwnableUpgradeable, ERC2981Upgradeable, ReentrancyGuardUpgradeable {
     /// @notice Contract merkle root
     bytes32 public merkleRoot;

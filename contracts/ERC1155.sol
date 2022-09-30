@@ -6,11 +6,6 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/common/ERC2981Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
 
-import "./WizardErrors.sol";
-
-/// @title Wizard ERC1155 Contract
-/// @author a6Ce6Bs
-/// @notice ERC1155 contract
 contract ERC1155 is ERC1155Upgradeable, ERC2981Upgradeable, OwnableUpgradeable {
     /// @notice Contract name
     string public name;

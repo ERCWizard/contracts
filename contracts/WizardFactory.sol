@@ -7,12 +7,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-import "./WizardErrors.sol";
+import "./Errors.sol";
 import "./interfaces/IERC721.sol";
 import "./interfaces/IERC1155.sol";
 
 /// @title Wizard Factory
-/// @author a6Ce6Bs
 /// @notice Factory that creates ERC contracts
 contract WizardFactory is Ownable, ReentrancyGuard {
     /// @notice Emitted on createERC721Contract() & createERC1155Contract()
