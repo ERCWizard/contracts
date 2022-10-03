@@ -6,21 +6,17 @@ module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
 
   const localhost = network.config.chainId == 31337
 
-  const ERC1155 = await deploy('ERC1155', {
-    contract: 'ERC1155',
+  const ERC721A = await deploy('ERC721A', {
+    contract: 'ERC721A',
     from: deployer,
     args: [],
     log: true,
     waitConfirmations: 5,
+    autoMine: true,
   })
 
   if (!localhost) {
-    await verify(
-      run,
-      'contracts/WizardERC1155.sol:ERC1155',
-      ERC1155.address,
-      []
-    )
+    await verify(run, 'contracts/ERC721A.sol:ERC721A', ERC721A.address, [])
   }
 }
 

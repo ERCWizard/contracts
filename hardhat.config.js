@@ -27,10 +27,10 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      mining: {
-        auto: false,
-        interval: 5000,
-      },
+      // mining: {
+      //   auto: false,
+      //   interval: 5000,
+      // },
     },
     mumbai: {
       url: process.env.MUMBAI_ALCHEMY_RPC_URL,

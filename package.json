@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "clean": "npx hardhat clean",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test --network hardhat",
-    "test-mumbai": "npx hardhat test --network mumbai"
+    "test-mumbai": "npx hardhat test --network mumbai",
+    "deploy:hardhat": "npx hardhat deploy --network hardhat --tags localhost",
+    "deploy:mumbai": "npx hardhat deploy --network mumbai --tags main",
+    "deploy:polygon": "npx hardhat deploy --network polygon --tags main"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +25,7 @@
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "@openzeppelin/contracts": "^4.7.3",
+    "@openzeppelin/contracts-upgradeable": "^4.8.0-rc.1",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
     "chai": "^4.3.6",
