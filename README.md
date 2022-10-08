@@ -43,12 +43,13 @@ POLYGONSCAN_API_KEY=
 
 ## Test coverage
 
-| File              | % Stmts | % Branch | % Funcs | % Lines |
-| ----------------- | ------- | -------- | ------- | ------- |
-| ERC1155.sol       | 78.26   | 100      | 72.73   | 78.26   |
-| ERC721A.sol       | 95.16   | 95.83    | 91.3    | 95.95   |
-| WizardFactory.sol | 100     | 93.75    | 100     | 100     |
-| WizardStorage.sol | 100     | 100      | 100     | 100     |
-| **All files**     | 93.33   | 95.24    | 89.8    | 94.29   |
+| File                | % Stmts | % Branch | % Funcs | % Lines |
+| ------------------- | ------- | -------- | ------- | ------- |
+| ERC1155_Basic.sol   | 79.17   | 100      | 72.73   | 79.17   |
+| ERC721A_Basic.sol   | 94.34   | 94.44    | 90      | 95.16   |
+| ERC721A_Premium.sol | 100     | 100      | 100     | 100     |
+| WizardFactory.sol   | 100     | 90       | 100     | 100     |
+| WizardStorage.sol   | 100     | 100      | 100     | 100     |
+| All files           | 93.1    | 94.44    | 89.8    | 94.03   |
 
 Coverage was calculated by the `solidity-coverage` plugin from hardhat.
