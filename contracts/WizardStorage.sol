@@ -5,16 +5,18 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import {Errors} from "./libraries/Errors.sol";
+import {Enums} from "./libraries/Enums.sol";
 
 /// @title Wizard Storage
-/// @notice Storage that store ERC contracts
+/// @notice Storage that store contracts
 contract WizardStorage is Ownable {
     address public factory;
 
-    /// @notice Created ERC contract
+    /// @notice Created contract
     struct CreatedContract {
-        uint8 _type;
-        address _address;
+        Enums.Standard standard;
+        Enums.Tier tier;
+        address address_;
     }
 
     /// @notice Mapping of address (deployer) to created contracts
@@ -26,16 +28,28 @@ contract WizardStorage is Ownable {
         factory = _factory;
     }
 
-    function addCreatedContract(address _deployer, uint8 _ERCType, address _addr) external {
+    /// @notice Function to store created contract data
+    /// @param _deployer Deployer address
+    /// @param _standard Contract standard
+    /// @param _tier Contract standard tier
+    /// @param _address Created contract address
+    function storeCreatedContract(
+        address _deployer,
+        Enums.Standard _standard,
+        Enums.Tier _tier,
+        address _address
+    ) external {
         if(factory != msg.sender) {
             revert Errors.CallerIsNotTheFactory();
         }
 
         createdContracts[_deployer].push(
-            CreatedContract({_type: _ERCType, _address: _addr})
+            CreatedContract({ standard: _standard, tier: _tier, address_: _address })
         );
     }
 
+    /// @notice Function to set the factory address
+    /// @param _factory Factory address
     function setFactoryAddress(address _factory) external onlyOwner {
         factory = _factory;
     }

@@ -1,8 +1,16 @@
 const { ethers } = require('hardhat')
 const { expect, assert } = require('chai')
-const { decimals, initialAnswer, cost, mintCostValue } = require('../../arguments')
+const {
+  decimals,
+  initialAnswer,
+  basicTierCost,
+  premiumTierCost,
+  advancedTierCost,
+  contractStandard,
+  contractTier,
+} = require('../../arguments')
 
-describe('ERC1155', () => {
+describe('ERC1155_Basic', () => {
   let MockV3Aggregator,
     MockV3Aggregator_CF,
     ERC1155,
@@ -22,12 +30,17 @@ describe('ERC1155', () => {
     MockV3Aggregator = await MockV3Aggregator_CF.deploy(decimals, initialAnswer)
     await MockV3Aggregator.deployed()
 
-    ERC1155_CF = await ethers.getContractFactory('ERC1155')
+    ERC1155_CF = await ethers.getContractFactory('ERC1155_Basic')
     ERC1155 = await ERC1155_CF.deploy()
     await ERC1155.deployed()
 
     WizardFactory_CF = await ethers.getContractFactory('WizardFactory')
-    WizardFactory = await WizardFactory_CF.deploy(cost, MockV3Aggregator.address)
+    WizardFactory = await WizardFactory_CF.deploy(
+      basicTierCost,
+      premiumTierCost,
+      advancedTierCost,
+      MockV3Aggregator.address
+    )
     await WizardFactory.deployed()
 
     WizardStorage_CF = await ethers.getContractFactory('WizardStorage')
@@ -45,15 +58,21 @@ describe('ERC1155', () => {
       _feePercent: '500',
     }
 
-    await WizardFactory.connect(owner).setWizardStorageImplementation(WizardStorage.address)
+    await WizardFactory.connect(owner).setStorageImplementation(WizardStorage.address)
 
-    await WizardFactory.connect(owner).setERC1155Implementation(ERC1155.address)
+    await WizardFactory.connect(owner).setContractImplementation(
+      contractStandard.ERC1155,
+      contractTier.Basic,
+      ERC1155.address
+    )
 
-    await WizardFactory.connect(owner).createERC1155Contract(...Object.values(ERC1155_init), mintCostValue)
+    await WizardFactory.connect(owner).createERC1155Contract(...Object.values(ERC1155_init), contractTier.Basic, {
+      value: basicTierCost,
+    })
 
     createdContractAddress = await WizardStorage.getCreatedContracts(owner.address)
 
-    createdContract = await ethers.getContractAt('ERC1155', createdContractAddress[0][1])
+    createdContract = await ethers.getContractAt('ERC1155_Basic', createdContractAddress[0][2])
   })
 
   describe('contructor', function () {

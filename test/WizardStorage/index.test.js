@@ -1,6 +1,14 @@
 const { ethers } = require('hardhat')
 const { expect } = require('chai')
-const { decimals, initialAnswer, cost } = require('../../arguments')
+const {
+  decimals,
+  initialAnswer,
+  basicTierCost,
+  premiumTierCost,
+  advancedTierCost,
+  contractStandard,
+  contractTier,
+} = require('../../arguments')
 
 describe('WizardStorage', () => {
   let MockV3Aggregator, MockV3Aggregator_CF, WizardFactory, WizardFactory_CF, WizardStorage, WizardStorage_CF, dev, user
@@ -11,7 +19,12 @@ describe('WizardStorage', () => {
     await MockV3Aggregator.deployed()
 
     WizardFactory_CF = await ethers.getContractFactory('WizardFactory')
-    WizardFactory = await WizardFactory_CF.deploy(cost, MockV3Aggregator.address)
+    WizardFactory = await WizardFactory_CF.deploy(
+      basicTierCost,
+      premiumTierCost,
+      advancedTierCost,
+      MockV3Aggregator.address
+    )
     await WizardFactory.deployed()
 
     WizardStorage_CF = await ethers.getContractFactory('WizardStorage')
@@ -19,13 +32,18 @@ describe('WizardStorage', () => {
     await WizardStorage.deployed()
     ;[dev, user] = await ethers.getSigners()
 
-    await WizardFactory.connect(dev).setWizardStorageImplementation(WizardStorage.address)
+    await WizardFactory.connect(dev).setStorageImplementation(WizardStorage.address)
   })
 
   describe('createContract', () => {
     it('should revert when addCreatedContract is not called by the factory', async () => {
       await expect(
-        WizardStorage.connect(user).addCreatedContract(user.address, 0, user.address)
+        WizardStorage.connect(user).storeCreatedContract(
+          user.address,
+          contractStandard.ERC721A,
+          contractTier.Basic,
+          user.address
+        )
       ).to.be.revertedWithCustomError(WizardStorage, 'CallerIsNotTheFactory')
     })
   })

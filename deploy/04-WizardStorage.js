@@ -14,7 +14,7 @@ module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
     from: deployer,
     args: [WizardFactoryAddress],
     log: true,
-    waitConfirmations: 5,
+    waitConfirmations: localhost ? 0 : 5,
     autoMine: true,
   })
 
@@ -24,4 +24,4 @@ module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
   await run('set-erc-implementation')
 }
 
-module.exports.tags = ['localhost', 'main', 'factory']
+module.exports.tags = ['localhost', 'main']

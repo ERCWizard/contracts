@@ -2,12 +2,15 @@
 
 pragma solidity ^0.8.7;
 
-/// @title WizardStorage
+import {Enums} from "../libraries/Enums.sol";
+
+/// @title IWizardStorage
 /// @notice Defines the interface of WizardStorage
 interface IWizardStorage {
-    function addCreatedContract(
-        address _deployer,
-        uint8 _ERCType,
-        address _addr
-    ) external;
+  function storeCreatedContract(
+    address _deployer,
+    Enums.Standard _standard,
+    Enums.Tier _tier,
+    address _address
+  ) external;
 }

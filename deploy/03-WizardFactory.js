@@ -1,4 +1,4 @@
-const { cost } = require('../arguments')
+const { basicTierCost, premiumTierCost, advancedTierCost } = require('../arguments')
 const { verify } = require('../scripts/verify')
 const { networkConfig } = require('../networkConfig')
 
@@ -19,17 +19,21 @@ module.exports = async ({ getNamedAccounts, deployments, run, network }) => {
     contract: 'WizardFactory',
     from: deployer,
     args: [
-      localhost ? cost : networkConfig[chainId].cost,
+      localhost ? basicTierCost : networkConfig[chainId].basicTierCost,
+      localhost ? premiumTierCost : networkConfig[chainId].premiumTierCost,
+      localhost ? advancedTierCost : networkConfig[chainId].advancedTierCost,
       localhost ? MockV3AggregatorAddress : networkConfig[chainId].priceFeedAddress,
     ],
     log: true,
-    waitConfirmations: 5,
+    waitConfirmations: localhost ? 0 : 5,
     autoMine: true,
   })
 
   if (!localhost) {
     await verify(run, 'contracts/WizardFactory.sol:WizardFactory', WizardFactory.address, [
-      networkConfig[chainId].cost,
+      networkConfig[chainId].basicTierCost,
+      networkConfig[chainId].premiumTierCost,
+      networkConfig[chainId].advancedTierCost,
       networkConfig[chainId].priceFeedAddress,
     ])
   }

@@ -6,9 +6,9 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/common/ERC2981Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
 
-import {Events} from "./libraries/Events.sol";
+import {Events} from "../libraries/Events.sol";
 
-contract ERC1155 is ERC1155Upgradeable, ERC2981Upgradeable, OwnableUpgradeable {
+contract ERC1155_Basic is ERC1155Upgradeable, ERC2981Upgradeable, OwnableUpgradeable {
     /// @notice Contract name
     string public name;
 
@@ -58,6 +58,7 @@ contract ERC1155 is ERC1155Upgradeable, ERC2981Upgradeable, OwnableUpgradeable {
         address _owner
     ) external initializer {
         __Ownable_init();
+        __ERC2981_init();
         __ERC1155_init("");
         name = _name;
         symbol = _symbol;

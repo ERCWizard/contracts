@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.7;
 
+import {Enums} from "../libraries/Enums.sol";
+
 library Errors {
     /// Insufficient funds!
     error InsufficientFunds();
@@ -9,11 +11,8 @@ library Errors {
     /// Invalid Storage Implementation!
     error InvalidStorageImplementation();
 
-    /// Invalid ERC721A Implementation!
-    error InvalidERC721AImplementation();
-
-    /// Invalid ERC1155 Implementation!
-    error InvalidERC1155Implementation();
+    /// Invalid ERC Implementation!
+    error InvalidContractImplementation(Enums.Standard _standard, Enums.Tier _tier);
 
     /// Invalid mint amount!
     error InvalidMintAmount();

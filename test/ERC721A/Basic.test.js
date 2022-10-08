@@ -3,15 +3,17 @@ const { expect, assert } = require('chai')
 const {
   decimals,
   initialAnswer,
-  cost,
+  basicTierCost,
+  premiumTierCost,
+  advancedTierCost,
   newCost,
   mintCost,
   mintCostValue,
-  merkleRoot,
-  merkleProof,
+  contractStandard,
+  contractTier,
 } = require('../../arguments')
 
-describe('ERC721A', () => {
+describe('ERC721A_Basic', () => {
   let MockV3Aggregator,
     MockV3Aggregator_CF,
     ERC721A,
@@ -29,12 +31,17 @@ describe('ERC721A', () => {
     MockV3Aggregator = await MockV3Aggregator_CF.deploy(decimals, initialAnswer)
     await MockV3Aggregator.deployed()
 
-    ERC721A_CF = await ethers.getContractFactory('ERC721A')
+    ERC721A_CF = await ethers.getContractFactory('ERC721A_Basic')
     ERC721A = await ERC721A_CF.deploy()
     await ERC721A.deployed()
 
     WizardFactory_CF = await ethers.getContractFactory('WizardFactory')
-    WizardFactory = await WizardFactory_CF.deploy(cost, MockV3Aggregator.address)
+    WizardFactory = await WizardFactory_CF.deploy(
+      basicTierCost,
+      premiumTierCost,
+      advancedTierCost,
+      MockV3Aggregator.address
+    )
     await WizardFactory.deployed()
 
     WizardStorage_CF = await ethers.getContractFactory('WizardStorage')
@@ -54,15 +61,23 @@ describe('ERC721A', () => {
       _feePercent: '500',
     }
 
-    await WizardFactory.connect(owner).setWizardStorageImplementation(WizardStorage.address)
+    await WizardFactory.connect(owner).setStorageImplementation(WizardStorage.address)
 
-    await WizardFactory.connect(owner).setERC721AImplementation(ERC721A.address)
+    await WizardFactory.connect(owner).setContractImplementation(
+      contractStandard.ERC721A,
+      contractTier.Basic,
+      ERC721A.address
+    )
 
-    await WizardFactory.connect(owner).createERC721AContract(...Object.values(ERC721A_init), mintCostValue)
+    await WizardFactory.connect(owner).createERC721AContract(
+      ...Object.values(ERC721A_init),
+      contractTier.Basic,
+      mintCostValue
+    )
 
     createdContractAddress = await WizardStorage.getCreatedContracts(owner.address)
 
-    createdContract = await ethers.getContractAt('ERC721A', createdContractAddress[0][1])
+    createdContract = await ethers.getContractAt('ERC721A_Basic', createdContractAddress[0][2])
   })
 
   describe('contructor', function () {
@@ -89,66 +104,6 @@ describe('ERC721A', () => {
     })
     it('correct owner', async function () {
       expect(await createdContract.owner()).to.equal(owner.address)
-    })
-  })
-
-  describe('whitelistMint function', function () {
-    it('setting setMerkleRoot by the owner', async function () {
-      expect(await createdContract.connect(owner).setMerkleRoot(merkleRoot))
-    })
-    it('setting setMerkleRoot by the user, should revert', async function () {
-      await expect(createdContract.connect(user).setMerkleRoot(merkleRoot)).to.be.revertedWith(
-        'Ownable: caller is not the owner'
-      )
-    })
-    it('using whitelistMint function when merkleRoot is not set, should revert', async function () {
-      expect(await createdContract.connect(owner).setWhitelistMintEnabled(true))
-
-      await expect(
-        createdContract.connect(user).whitelistMint(1, merkleProof, { value: mintCost })
-      ).to.be.revertedWithCustomError(createdContract, 'InvalidProof')
-    })
-    it('using whitelistMint function when setWhitelistMintEnabled is false, should revert', async function () {
-      expect(await createdContract.connect(owner).setMerkleRoot(merkleRoot))
-
-      expect(await createdContract.merkleRoot()).to.equal(merkleRoot)
-
-      await expect(
-        createdContract.connect(user).whitelistMint(1, merkleProof, { value: mintCost })
-      ).to.be.revertedWithCustomError(createdContract, 'TheWhitelistSaleIsNotEnabled')
-    })
-    it('using whitelistMint function by the whitelisted address', async function () {
-      expect(await createdContract.connect(owner).setMerkleRoot(merkleRoot))
-      expect(await createdContract.connect(owner).setWhitelistMintEnabled(true))
-
-      expect(await createdContract.merkleRoot()).to.equal(merkleRoot)
-      expect(await createdContract.whitelistMintEnabled()).to.equal(true)
-
-      expect(await createdContract.connect(user).whitelistMint(1, merkleProof, { value: mintCost }))
-    })
-    it('using whitelistMint function by the non whitelisted address', async function () {
-      expect(await createdContract.connect(owner).setMerkleRoot(merkleRoot))
-      expect(await createdContract.connect(owner).setWhitelistMintEnabled(true))
-
-      expect(await createdContract.merkleRoot()).to.equal(merkleRoot)
-      expect(await createdContract.whitelistMintEnabled()).to.equal(true)
-
-      await expect(
-        createdContract.connect(owner).whitelistMint(1, merkleProof, { value: mintCost })
-      ).to.be.revertedWithCustomError(createdContract, 'InvalidProof')
-    })
-    it('using whitelistMint function by the whitelisted address twice, should revert', async function () {
-      expect(await createdContract.connect(owner).setMerkleRoot(merkleRoot))
-      expect(await createdContract.connect(owner).setWhitelistMintEnabled(true))
-
-      expect(await createdContract.merkleRoot()).to.equal(merkleRoot)
-      expect(await createdContract.whitelistMintEnabled()).to.equal(true)
-
-      expect(await createdContract.connect(user).whitelistMint(1, merkleProof, { value: mintCost }))
-
-      await expect(
-        createdContract.connect(user).whitelistMint(1, merkleProof, { value: mintCost })
-      ).to.be.revertedWithCustomError(createdContract, 'AddressAlreadyClaimed')
     })
   })
 
